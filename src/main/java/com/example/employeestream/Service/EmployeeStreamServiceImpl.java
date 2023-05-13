@@ -6,8 +6,10 @@ import com.example.employeestream.EmployeeExceptions.EmployeeNotFoundException;
 import com.example.employeestream.EmployeeExceptions.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class EmployeeStreamServiceImpl implements EmployeeStreamService {
@@ -16,7 +18,7 @@ public class EmployeeStreamServiceImpl implements EmployeeStreamService {
 
 
     @Override
-    public Employee addNewEmployee(String firstName, String lastName) {
+    public Employee addNewEmployee(String firstName, String lastName, int department, int salary) {
         String employeeKey = getEmployeeKey(firstName, lastName);
 
         if (employees.containsKey(employeeKey)) {
@@ -24,7 +26,7 @@ public class EmployeeStreamServiceImpl implements EmployeeStreamService {
         } else if (SIZE == employees.size()) {
             throw new EmployeeStorageIsFullException("Can not hire more employees");
         } else {
-            Employee employee = new Employee(firstName, lastName);
+            Employee employee = new Employee(firstName, lastName, department, salary);
             employees.put(employeeKey, employee);
             System.out.println(employee);
         }
