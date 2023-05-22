@@ -20,8 +20,10 @@ public class EmployeeStreamController {
 
     @GetMapping(path = "/add")
     public Employee addEmployee(@RequestParam("firstName") String firstName,
-                                @RequestParam("lastName") String lastName) {
-        return employeeStreamService.addNewEmployee(firstName, lastName);
+                                @RequestParam("lastName") String lastName,
+                                @RequestParam ("department") int department,
+                                @RequestParam("salary") int salary) {
+        return employeeStreamService.addNewEmployee(firstName, lastName, department, salary);
     }
 
     @GetMapping(path = "/remove")

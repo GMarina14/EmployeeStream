@@ -10,7 +10,7 @@ import java.util.Map;
 public interface EmployeeStreamService {
     Map<Integer, Employee> employees = new HashMap<>(Map.of());
 
-    public Employee addNewEmployee(String firstName, String lastName);
+    public Employee addNewEmployee(String firstName, String lastName, int department, int salary);
 
     public void removeEmployee(String firstName, String lastName);
 
