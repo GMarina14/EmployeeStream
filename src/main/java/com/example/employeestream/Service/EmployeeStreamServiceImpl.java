@@ -4,23 +4,23 @@ import com.example.employeestream.Employee.Employee;
 import com.example.employeestream.EmployeeExceptions.EmployeeAlreadyAddedException;
 import com.example.employeestream.EmployeeExceptions.EmployeeNotFoundException;
 import com.example.employeestream.EmployeeExceptions.EmployeeStorageIsFullException;
+import com.example.employeestream.EmployeeExceptions.IncorrectData;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+
 
 @Service
 public class EmployeeStreamServiceImpl implements EmployeeStreamService {
     private final int SIZE = 5;
     Map<String, Employee> employees = new HashMap<>(Map.of());
 
-
     @Override
     public Employee addNewEmployee(String firstName, String lastName, int department, int salary) {
-        String employeeKey = getEmployeeKey(firstName, lastName);
-
+        checkData(firstName, lastName);
+        String employeeKey = getEmployeeKey(StringUtils.capitalize(firstName.toLowerCase()), StringUtils.capitalize(lastName.toLowerCase()));
         if (employees.containsKey(employeeKey)) {
             throw new EmployeeAlreadyAddedException("An employee with the same full name already was added");
         } else if (SIZE == employees.size()) {
@@ -30,7 +30,10 @@ public class EmployeeStreamServiceImpl implements EmployeeStreamService {
             employees.put(employeeKey, employee);
             System.out.println(employee);
         }
+
+
         return employees.get(employeeKey);
+
     }
 
     @Override
@@ -61,4 +64,11 @@ public class EmployeeStreamServiceImpl implements EmployeeStreamService {
     private String getEmployeeKey(String firstName, String lastName) {
         return firstName + ' ' + lastName;
     }
+
+    private void checkData(String firstName, String lastName) throws IncorrectData {
+        if (!((StringUtils.isAlpha(firstName)) && StringUtils.isAlpha(lastName))) {
+            throw new IncorrectData("Invalid data");
+        }
+    }
+
 }
